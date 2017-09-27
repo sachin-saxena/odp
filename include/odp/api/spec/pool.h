@@ -165,7 +165,20 @@ int odp_pool_capability(odp_pool_capability_t *capa);
 typedef struct odp_pool_param_t {
 	/** Pool type */
 	int type;
-
+	/** Flag to indicate whether user is requesting for contiguous
+	    memory for buffers or packets in pool.
+	    If TRUE, then address range for buffers or packets
+	    must be returned by API as addr_start & addr_len.
+	    If FALSE, then filling these parameters is optional.
+	 */
+	odp_bool_t contig_mem;
+	/** Start of virtual address */
+	union {
+		void *addr_start;
+		uint64_t addr_start_64;
+	};
+	/** Total length of memory used for buffers/packets */
+	uint32_t addr_len;
 	/** Variant parameters for different pool types */
 	union {
 		/** Parameters for buffer pools */
